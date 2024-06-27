@@ -61,8 +61,8 @@ if (Factory::getUser()->id)
 		<div class="container">
 		<div class="row">
 			<div class="col-sm-12 vendorForm" id="tj-edit-form">
-				<ul class="nav nav-tabs vendorForm__nav d-flex mb-15">
-					<li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#tab1"><?php echo Text::_('COM_TJVENDORS_TITLE_PERSONAL'); ?></a> </li>
+				<ul class="nav nav-tabs vendorForm__nav d-flex mb-15" id="myTab">
+					<li class="nav-item"><a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#tab1"><?php echo Text::_('COM_TJVENDORS_TITLE_PERSONAL'); ?></a> </li>
 					<li class="nav-item"><a class="nav-link" href="javascript:void(0);" data-bs-toggle="tab" data-bs-target="#tab2"><?php echo Text::_('COM_TJVENDORS_VENDOR_PAYMENT_GATEWAY_DETAILS'); ?></a></li>
 				</ul>
 				<!----Tab Container Start----->
@@ -144,7 +144,7 @@ if (Factory::getUser()->id)
 					</div>
 					<!----Tab 1 End----->
 					<!----Tab 2 Start----->
-					<div id="tab2" class="tab-pane fade">
+					<div id="tab2" class="tab-pane">
 						<div class="row">
 							<?php
 								$this->form->setFieldAttribute('payment_gateway', 'layout', '');
