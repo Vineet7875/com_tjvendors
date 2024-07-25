@@ -20,7 +20,6 @@ use Joomla\CMS\Uri\Uri;
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::script(Uri::root(true) . '/libraries/techjoomla/assets/js/tjvalidator.js');
 
@@ -125,7 +124,7 @@ if (Factory::getUser()->id)
 										</div>
 										<div class="controls">
 											<?php echo $this->dropdown = HTMLHelper::_('select.genericlist', $this->options, 'jform[country]',
-												'aria-invalid="false" size="1" onchange="CommonObj.generateStates(id,\'' .
+												'class="form-select" aria-invalid="false" size="1" onchange="CommonObj.generateStates(id,\'' .
 												0 . '\',\'' . $this->vendor->region . '\',\'' . $this->vendor->city . '\')"', 'value', 'text', $this->default, 'jform_country');
 											?>
 										</div>
