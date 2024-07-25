@@ -197,11 +197,25 @@ class TjvendorsControllerVendor extends FormController
 		$vendor_id = $db->loadResult();
 		$input = Factory::getApplication()->input;
 
+		$client = $input->get('client', '', 'STRING');
+
+		$itemId= 0;
+		if ($client)
+		{
+			$menu = $app->getMenu();
+			$items = $menu->getItems('link', 'index.php?option=com_tjvendors&view=vendor&client=' . $client);
+	
+			if (isset($items[0]))
+			{
+				$itemId = $items[0]->id;
+			}
+		}
+
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_TJVENDORS_MSG_SUCCESS_SAVE_VENDOR'));
 		$this->setRedirect(
 				Route::_(
-				'index.php?option=com_tjvendors&view=vendor&layout=default&vendor_id=' . $vendor_id . '&client=' . $input->get('client', '', 'STRING'), false
+				'index.php?option=com_tjvendors&view=vendor&layout=default&vendor_id=' . $vendor_id . '&client=' . $client . '&Itemid=' . $itemId, false
 				)
 				);
 
@@ -221,11 +235,24 @@ class TjvendorsControllerVendor extends FormController
 		$app = Factory::getApplication();
 		$input = $app->input;
 		$data = $input->get('jform', array(), 'array');
+		$client = $input->get('client', '', 'STRING');
+
+		$itemId= 0;
+		if ($client)
+		{
+			$menu = $app->getMenu();
+			$items = $menu->getItems('link', 'index.php?option=com_tjvendors&view=vendor&client=' . $client);
+	
+			if (isset($items[0]))
+			{
+				$itemId = $items[0]->id;
+			}
+		}
 
 		if (!empty($data['vendor_id']))
 		{
 			$this->setRedirect(
-			Route::_('index.php?option=com_tjvendors&view=vendor&layout=default&vendor_id=' . $data['vendor_id'] . '&client=' . $input->get('client', '', 'STRING'), false)
+			Route::_('index.php?option=com_tjvendors&view=vendor&layout=default&vendor_id=' . $data['vendor_id'] . '&client=' . $client . '&Itemid=' . $itemId, false)
 			);
 		}
 		else
