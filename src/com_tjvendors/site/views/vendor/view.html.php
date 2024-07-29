@@ -101,6 +101,19 @@ class TjvendorsViewVendor extends HtmlView
 			$this->default = $this->vendor->country;
 		}
 
+		$this->vendorFormItemId = 0;
+		if ($this->client)
+		{
+			$app  = Factory::getApplication();
+			$menu = $app->getMenu();
+			$items = $menu->getItems('link', 'index.php?option=com_tjvendors&view=vendor&client=' . $this->client);
+	
+			if (isset($items[0]))
+			{
+				$this->vendorFormItemId = $items[0]->id;
+			}
+		}
+
 		$this->options = array();
 		$this->options[] = HTMLHelper::_('select.option', 0, Text::_('COM_TJVENDORS_FORM_LIST_SELECT_OPTION'));
 

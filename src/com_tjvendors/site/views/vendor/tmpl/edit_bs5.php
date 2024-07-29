@@ -20,7 +20,6 @@ use Joomla\CMS\Uri\Uri;
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::script(Uri::root(true) . '/libraries/techjoomla/assets/js/tjvalidator.js');
 
@@ -57,7 +56,7 @@ if (Factory::getUser()->id)
 		}
 		?>
 	</h1>
-	<form action="<?php echo Route::_('index.php?option=com_tjvendors&layout=edit&vendor_id=' . $this->input->get('vendor_id', '', 'INTEGER') . '&client=' . $this->input->get('client', '', 'STRING')); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="form-validate">
+	<form action="<?php echo Route::_('index.php?option=com_tjvendors&layout=edit&vendor_id=' . $this->input->get('vendor_id', '', 'INTEGER') . '&client=' . $this->input->get('client', '', 'STRING') . '&Itemid=' . $this->vendorFormItemId); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="form-validate">
 		<div class="container">
 		<div class="row">
 			<div class="col-sm-12 vendorForm" id="tj-edit-form">
@@ -125,7 +124,7 @@ if (Factory::getUser()->id)
 										</div>
 										<div class="controls">
 											<?php echo $this->dropdown = HTMLHelper::_('select.genericlist', $this->options, 'jform[country]',
-												'aria-invalid="false" size="1" onchange="CommonObj.generateStates(id,\'' .
+												'class="form-select" aria-invalid="false" size="1" onchange="CommonObj.generateStates(id,\'' .
 												0 . '\',\'' . $this->vendor->region . '\',\'' . $this->vendor->city . '\')"', 'value', 'text', $this->default, 'jform_country');
 											?>
 										</div>
