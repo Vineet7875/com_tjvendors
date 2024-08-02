@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::stylesheet('media/com_tjvendor/css/tjvendors.css');
 
 $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
@@ -53,17 +54,17 @@ $listDirn  = $this->state->get('list.direction');
 		?>
 		<form action="<?php echo Route::_('index.php?option=com_tjvendors&view=vendors&client=' . $this->input->get('client', '', 'STRING') . '&Itemid=' . $this->vendorItemID);?>" method="post" id="adminForm" name="adminForm">
 
-			<div id="j-main-container" class="vendor-report">
+			<div id="j-main-container tjBs3" class="vendor-report">
 				<!-----"vendor-report" is a page cover class--->
 				<div class="row">
 					<div class="col-xs-12 col-md-6 date">
 						<div class="btn-group input-group">
 							<span class="input-group-btn">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', '%Y-%m-%d', array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
+								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', '%Y-%m-%d', array('placeholder' => 'From %Y-%m-%d' ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
 							</span>
 
 							<span class="input-group-btn">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', '%Y-%m-%d', array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
+								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', '%Y-%m-%d', array('placeholder' => 'To %Y-%m-%d' ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
 							</span>
 
 							<span>
