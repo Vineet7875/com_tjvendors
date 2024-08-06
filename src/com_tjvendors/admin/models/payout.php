@@ -90,6 +90,11 @@ class TjvendorsModelPayout extends AdminModel
 			return false;
 		}
 
+		if ($form->getValue('total')) 
+		{
+			$form->setFieldAttribute('total', 'max', $form->getValue('total'));
+		}
+
 		return $form;
 	}
 
