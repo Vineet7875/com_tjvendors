@@ -60,11 +60,11 @@ $listDirn  = $this->state->get('list.direction');
 					<div class="col-xs-12 col-md-6 date">
 						<div class="btn-group input-group">
 							<span class="input-group-btn">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', '%Y-%m-%d', array('placeholder' => 'From %Y-%m-%d' ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
+								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', Text::_('COM_TJVENDORS_FROM'), array('placeholder' => Text::_('COM_TJVENDORS_FROM') ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
 							</span>
 
 							<span class="input-group-btn">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', '%Y-%m-%d', array('placeholder' => 'To %Y-%m-%d' ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
+								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', Text::_('COM_TJVENDORS_TO'), array('placeholder' => Text::_('COM_TJVENDORS_TO') ,'class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()')); ?>
 							</span>
 
 							<span>
