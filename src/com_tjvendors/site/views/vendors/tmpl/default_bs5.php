@@ -90,7 +90,7 @@ $listDirn  = $this->state->get('list.direction');
 							{
 								?>
 								<li>
-									<div class="input-group-btn hidden-xs">
+									<div class="input-group-btn ms-2 mt-2 hidden-xs">
 										<?php
 										echo HTMLHelper::_('select.genericlist', $this->currencies, "currency", 'class="input-medium" size="1" onchange="document.adminForm.submit();"', "currency", "currency", $this->state->get('filter.currency'));
 										$currency = $this->state->get('filter.currency');
@@ -104,7 +104,7 @@ $listDirn  = $this->state->get('list.direction');
 							{
 								?>
 								<li>
-									<div class="input-group-btn">
+									<div class="input-group-btn ms-2 mt-2">
 										<?php
 										echo HTMLHelper::_('select.genericlist', $this->uniqueClients, "vendor_client", 'class="input-medium" size="1" onchange="document.adminForm.submit();"', "clientType", "clientValue", $this->state->get('filter.vendor_client'));
 										$clientFilter = $this->state->get('filter.vendor_client');
@@ -116,7 +116,7 @@ $listDirn  = $this->state->get('list.direction');
 							?>
 
 							<li>
-								<div class="input-group-btn hidden-xs">
+								<div class="input-group-btn hidden-xs ms-2 mt-2">
 									<?php
 									$transactionType[] = array("transactionType" => Text::_('COM_TJVENDORS_REPORTS_FILTER_ALL_TRANSACTIONS'), "transactionValue" => "0");
 									$transactionType[] = array("transactionType" => Text::_('COM_TJVENDORS_REPORTS_FILTER_CREDIT'), "transactionValue" => Text::_('COM_TJVENDORS_REPORTS_FILTER_CREDIT'));
@@ -129,7 +129,7 @@ $listDirn  = $this->state->get('list.direction');
 							</li>
 
 							<li class="pr-0">
-								<div  class="input-group-btn hidden">
+								<div  class="input-group-btn hidden ms-2 mt-2">
 									<label for="limit" >
 										<?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?>
 									</label>
