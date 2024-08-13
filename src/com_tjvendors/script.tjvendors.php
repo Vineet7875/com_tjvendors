@@ -596,7 +596,7 @@ class Com_TjvendorsInstallerScript
 		$query->select('id');
 		$query->from($db->quoteName('#__menu'));
 		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
-		$query->where($db->quoteName('path') . ' IN ("com-tjvendors-tjnotifications-menu")');
+		$query->where($db->quoteName('path') . ' IN ("com-tjvendors-tjnotifications-menu", "com_tjvendors_tjnotifications_menu")');
 		$db->setQuery($query);
 		$data = $db->loadObjectList();
 
