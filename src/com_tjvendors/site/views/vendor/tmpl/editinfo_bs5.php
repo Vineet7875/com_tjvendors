@@ -91,20 +91,28 @@ if (Factory::getUser()->id)
 
 							<div class="row">
 								<div class="col-sm-6">
-									<?php
-										echo $this->form->renderField('vendor_title');
-										echo $this->form->renderField('alias');
-										echo $this->form->renderField('vendor_description');
-									?>
-									<input type="hidden" name="jform[vendor_logo]" id="jform_vendor_logo_hidden" value="<?php echo $this->vendorLogoProfileImg ?>" />
-									<div class="form-group">
-										<div class="row">
-											<div class="col-xs-12 col-sm-10 col-md-7">
-												<img src="<?php echo $this->vendorLogoProfileImgPath; ?>">
-											</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('vendor_title'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('vendor_title'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('alias'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('alias'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('vendor_description'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('vendor_description'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12"></div>
+										<div class="col-sm-9 col-xs-12">
+											<img src="<?php echo $this->vendorLogoProfileImgPath; ?>">
 										</div>
 										<div class="mt-10">
-											<?php echo $this->form->renderField('vendor_logo'); ?>
+											<div class="form-group row mt-2">
+												<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('vendor_logo'); ?></div>
+												<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('vendor_logo'); ?></div>
+											</div>
 										</div>
 									</div>
 									<div class="alert alert-info col-sm-8">
@@ -112,31 +120,51 @@ if (Factory::getUser()->id)
 									</div>
 								</div>
 								<div class="col-sm-6">
-									<?php
-										echo $this->form->renderField('phone_number');
-										echo $this->form->renderField('address');
-									?>
-									<div class="control-group" id="country_group">
-										<div class="control-label">
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('phone_number'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('phone_number'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('address'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('address'); ?></div>
+									</div>
+									<div class="form-group row mt-2" id="country_group">
+										<div class="col-sm-3 col-xs-12 form-label">
 											<label for="jform_country">
 												<?php echo $this->form->getLabel('country'); ?>
 											</label>
 										</div>
-										<div class="controls">
+										<div class="col-sm-9 col-xs-12">
 											<?php echo $this->dropdown = HTMLHelper::_('select.genericlist', $this->options, 'jform[country]',
 												'class="form-select" aria-invalid="false" size="1" onchange="CommonObj.generateStates(id,\'' .
 												0 . '\',\'' . $this->vendor->region . '\',\'' . $this->vendor->city . '\')"', 'value', 'text', $this->default, 'jform_country');
 											?>
 										</div>
 									</div>
-									<?php
-										echo $this->form->renderField('region');
-										echo $this->form->renderField('city');
-										echo $this->form->renderField('other_city');
-										echo $this->form->renderField('zip');
-										echo $this->form->renderField('website_address');
-										echo $this->form->renderField('vat_number');
-									?>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('region'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('region'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('city'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('city'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('other_city'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('other_city'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('zip'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('zip'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('website_address'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('website_address'); ?></div>
+									</div>
+									<div class="form-group row mt-2">
+										<div class="col-sm-3 col-xs-12 form-label"><?php echo $this->form->getLabel('vat_number'); ?></div>
+										<div class="col-sm-9 col-xs-12"><?php echo $this->form->getInput('vat_number'); ?></div>
+									</div>
 								</div>
 							</div>
 						</fieldset>

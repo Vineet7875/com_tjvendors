@@ -151,7 +151,7 @@ class TjvendorsViewVendor extends HtmlView
 				{
 					if ($client == $this->client)
 					{
-						$link = Route::_('index.php?option=com_tjvendors&view=vendor&layout=edit&vendor_id=' . $this->vendor_id . '&client=' . $this->client);
+						$link = Route::_('index.php?option=com_tjvendors&view=vendor&layout=editinfo&vendor_id=' . $this->vendor_id . '&client=' . $this->client);
 						$app->enqueueMessage(Text::_('COM_TJVENDOR_REGISTRATION_REDIRECT_MESSAGE'));
 						$app->redirect($link);
 					}

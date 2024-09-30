@@ -11,6 +11,6 @@
 // Do not allow direct access
 defined('_JEXEC') or die('Restricted access');
 
-$bsVersion = (JVERSION > '4.0.0') ? 'bs5' : 'bs3';
+$bsVersion = (JVERSION >= '4.0.0') ? 'bs5' : 'bs3';
 
 echo $this->loadTemplate($bsVersion);
