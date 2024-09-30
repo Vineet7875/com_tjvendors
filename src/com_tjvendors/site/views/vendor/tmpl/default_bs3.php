@@ -26,7 +26,7 @@ use Joomla\CMS\Uri\Uri;
 				<small>
 					<a  
 					href="<?php echo Route::_(
-					'index.php?option=com_tjvendors&view=vendor&layout=edit&vendor_id='. $this->vendor_id .'&client=' . $this->input->get('client', '', 'STRING') . '&Itemid=' . $this->vendorFormItemId
+					'index.php?option=com_tjvendors&view=vendor&layout=editinfo&vendor_id='. $this->vendor_id .'&client=' . $this->input->get('client', '', 'STRING') . '&Itemid=' . $this->vendorFormItemId
 					);?>">
 					<i class="fa fa-wrench" aria-hidden="true"></i>  <?php echo Text::_("COM_TJVENDORS_VENDOR_UPDATE"); ?></a>
 				</small>

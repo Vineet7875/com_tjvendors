@@ -152,7 +152,7 @@ class TjvendorsControllerVendor extends FormController
 			$id = $app->input->get('vendor_id', '', 'INTEGER');
 			$client = $app->input->get('client', '', 'STRING');
 
-			$this->setRedirect(Route::_('index.php?option=com_tjvendors&view=vendor&layout=edit&vendor_id=' . $id . '&client=' . $client, false));
+			$this->setRedirect(Route::_('index.php?option=com_tjvendors&view=vendor&layout=editinfo&vendor_id=' . $id . '&client=' . $client, false));
 
 			return false;
 		}
