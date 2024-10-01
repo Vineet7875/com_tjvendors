@@ -36,8 +36,6 @@ $script[] = 'var region = "' . $this->vendor->region . '"';
 $script[] = 'var city   = "' . $this->vendor->city . '"';
 $script[] = 'tjVSite.vendor.initVendorJs();';
 
-Text::script('COM_TJVENDORS_URL_INVALID_MESSAGE');
-
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 ?>
 <div id="tjv-wrapper" class="<?php echo COM_TJVENDORS_WRAPPAER_CLASS;?>">

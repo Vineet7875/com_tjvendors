@@ -209,6 +209,7 @@
 			type="url"
 			default=""
 			label="COM_TJVENDORS_FORM_LBL_WEBSITE"
+			class="form-control validate-urlformat"
 			description="COM_TJVENDORS_FORM_DESC_WEBSITE"
 			validate="url"
 			schemes="http,https"
