@@ -248,7 +248,7 @@ var tjVSite = {
 					);
 
 					if (validData == true) {
-						if (!urlPattern.test(url)) 
+						if (url && !urlPattern.test(url)) 
 						{
 							techjoomla.jQuery("#jform_website_address").css("border-color", "red");
 							alert(Joomla.JText._('COM_TJVENDORS_URL_INVALID_MESSAGE'));
