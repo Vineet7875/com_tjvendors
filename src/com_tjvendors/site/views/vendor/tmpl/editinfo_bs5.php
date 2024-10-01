@@ -177,7 +177,14 @@ if (Factory::getUser()->id)
 						<div class="row">
 							<?php
 								$this->form->setFieldAttribute('payment_gateway', 'layout', '');
-								echo $this->form->getInput('payment_gateway');
+								$html = $this->form->getInput('payment_gateway');
+								$html = str_replace('custom-select', 'form-select', $html);
+								$html = str_replace('btn-mini', 'btn-sm', $html);
+								$html = str_replace('text-right', 'text-right  float-end', $html);
+								$html = str_replace('control-group', 'form-group row', $html);
+								$html = str_replace('control-label', 'form-label col-md-4', $html);
+								$html = str_replace('controls', 'col-md-8', $html);
+								echo $html;
 							?>
 						</div>
 					</div>
