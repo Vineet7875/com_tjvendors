@@ -44,12 +44,8 @@ $listDirn  = $this->state->get('list.direction');
 #tjv-wrapper th{
 	white-space: inherit;
 }
-
-#tjv-wrapper .date__field{
-	width: 130px;
-}
 </style>
-<div id="tjv-wrapper" class="<?php echo COM_TJVENDORS_WRAPPAER_CLASS;?> container">
+<div id="tjv-wrapper" class="<?php echo COM_TJVENDORS_WRAPPAER_CLASS;?>  tjBs5 container">
 	<h1>
 		<?php echo Text::_('COM_TJVENDOR_VENDOR_PAYOUT_REPORTS'); ?>
 	</h1>
@@ -65,17 +61,17 @@ $listDirn  = $this->state->get('list.direction');
 			<div id="j-main-container" class="vendor-report">
 				<!-----"vendor-report" is a page cover class--->
 				<div class="row">
-					<div class="col-xs-12 col-md-6 date">
-						<div class="btn-group input-group">
-							<span class="input-group-btn">
+					<div class="col-xs-12 col-md-12 date">
+						<div class="row">
+							<span class="col-md-4">
 								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', Text::_('COM_TJVENDORS_FROM'), array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_FROM'))); ?>
 							</span>
 
-							<span class="input-group-btn ms-3">
+							<span class="col-md-4">
 								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', Text::_('COM_TJVENDORS_TO'), array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_TO'))); ?>
 							</span>
 
-							<span class="ms-3">
+							<span class="col-md-2">
 								<button class="btn btn-primary" id="clear-calendar" type="button" title="<?php echo Text::_('JSEARCH_CALENDAR_CLEAR'); ?>">
 									<i class="icon-remove"></i>
 								</button>
@@ -83,7 +79,7 @@ $listDirn  = $this->state->get('list.direction');
 						</div>
 					</div>
 
-					<div class="col-xs-12 col-md-6 btn-group">
+					<div class="col-xs-12 col-md-12 btn-group">
 						<ul class="input-group list-inline justify-content-md-end">
 							<?php
 							if (!empty($this->currencies))
