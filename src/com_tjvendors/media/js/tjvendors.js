@@ -232,11 +232,25 @@ var tjVSite = {
 			jQuery(document).ready(function() {
 				tjCommon.vendorLogoValidation();
 				tjCommon.initVendorFields();
+
+				document.formvalidator.setHandler('urlformat', function (value) {
+						var regex = new RegExp(
+							'^(https?:\\/\\/)?' + // protocol
+							'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+							'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+							'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+							'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+							'(\\#[-a-z\\d_]*)?$','i' // fragment locator
+						);
+
+						return regex.test(value);
+				});
 			});
 
 			Joomla.submitbutton = function(task) {
 				if (task == 'vendor.save') {
 					var validData = document.formvalidator.isValid(document.getElementById('adminForm'));
+
 					if (validData == true) {
 						Joomla.submitform(task, document.getElementById('adminForm'));
 					}
