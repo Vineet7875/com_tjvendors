@@ -64,11 +64,12 @@ $listDirn  = $this->state->get('list.direction');
 					<div class="col-xs-12 col-md-12 date">
 						<div class="row">
 							<span class="col-md-4">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', Text::_('COM_TJVENDORS_FROM'), array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_FROM'))); ?>
+								<?php 
+								echo HTMLHelper::_('calendar', $this->state->get('filter.fromDate'), 'fromDates', 'dates', '%Y-%m-%d', array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_FROM'))); ?>
 							</span>
 
 							<span class="col-md-4">
-								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', Text::_('COM_TJVENDORS_TO'), array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_TO'))); ?>
+								<?php echo HTMLHelper::_('calendar', $this->state->get('filter.toDate'), 'toDates', 'date', '%Y-%m-%d', array('class' => 'inputbox date__field', 'onchange' => 'document.adminForm.submit()', 'placeholder' => Text::_('COM_TJVENDORS_TO'))); ?>
 							</span>
 
 							<span class="col-md-2">
