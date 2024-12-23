@@ -10,6 +10,7 @@
 
 // No direct access
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -58,8 +59,9 @@ class TjvendorsViewVendor extends HtmlView
 	protected $countries;
 
 	protected $vendorLogoProfileImg;
-
 	protected $vendorLogoProfileImgPath;
+	
+	protected $vendorFormItemId;
 
 	/**
 	 * Display the view
@@ -100,6 +102,19 @@ class TjvendorsViewVendor extends HtmlView
 			$this->default = $this->vendor->country;
 		}
 
+		$this->vendorFormItemId = 0;
+		if ($this->client)
+		{
+			$app  = Factory::getApplication();
+			$menu = $app->getMenu();
+			$items = $menu->getItems('link', 'index.php?option=com_tjvendors&view=vendor&client=' . $this->client);
+	
+			if (isset($items[0]))
+			{
+				$this->vendorFormItemId = $items[0]->id;
+			}
+		}
+
 		$this->options = array();
 		$this->options[] = HTMLHelper::_('select.option', 0, Text::_('COM_TJVENDORS_FORM_LIST_SELECT_OPTION'));
 
@@ -111,7 +126,7 @@ class TjvendorsViewVendor extends HtmlView
 			$this->options[] = HTMLHelper::_('select.option', $id, $value);
 		}
 
-		$this->vendorLogoProfileImg = "/administrator/components/com_tjvendors/assets/images/default.png";
+		$this->vendorLogoProfileImg = "media/com_tjvendor/images/default.png";
 		$this->vendorLogoProfileImgPath = Uri::root() . $this->vendorLogoProfileImg;
 
 		$app->setUserState("vendor.client", $this->client);
@@ -123,7 +138,9 @@ class TjvendorsViewVendor extends HtmlView
 
 		if (isset($this->vendor->vendor_id) && $this->vendor_id != $this->vendor->vendor_id)
 		{
-			throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+
+			return false;
 		}
 
 		if (!empty($this->vendor_id) && $this->layout == "edit")
@@ -134,7 +151,7 @@ class TjvendorsViewVendor extends HtmlView
 				{
 					if ($client == $this->client)
 					{
-						$link = Route::_('index.php?option=com_tjvendors&view=vendor&layout=edit&vendor_id=' . $this->vendor_id . '&client=' . $this->client);
+						$link = Route::_('index.php?option=com_tjvendors&view=vendor&layout=editinfo&vendor_id=' . $this->vendor_id . '&client=' . $this->client);
 						$app->enqueueMessage(Text::_('COM_TJVENDOR_REGISTRATION_REDIRECT_MESSAGE'));
 						$app->redirect($link);
 					}
@@ -172,9 +189,9 @@ class TjvendorsViewVendor extends HtmlView
 				$app->enqueueMessage(Text::_('COM_TJVENDOR_REGISTRATION_VENDOR_ERROR'), 'notice');
 				$app->redirect($link);
 			}
-			elseif(!Factory::getUser()->id)
+			elseif (!Factory::getUser()->id)
 			{
-				$link = Route::_('index.php?option=com_users');
+				$link = Route::_('index.php?option=com_users&view=login');
 				$app->redirect($link);
 			}
 		}

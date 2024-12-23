@@ -10,13 +10,15 @@
 
 // No direct access
 defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -29,12 +31,10 @@ class TjvendorsTablevendor extends Table
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabase  &$db  A database connector object
+	 * @param   Joomla\Database\DatabaseDriver  $db  A database connector object
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
-		JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'TjvendorsTablevendor', array('typeAlias' => 'com_tjvendors.vendor'));
-
 		parent::__construct('#__tjvendors_vendors', 'vendor_id', $db);
 	}
 
@@ -79,7 +79,7 @@ class TjvendorsTablevendor extends Table
 				$array_jaccess[$action->name] = $default_actions[$action->name];
 			}
 
-			$array['rules'] = $this->JAccessRulestoArray($array_jaccess);
+			$array['rules'] = $this->RulestoArray($array_jaccess);
 		}
 
 		// Bind the rules for ACL where supported.
@@ -98,7 +98,7 @@ class TjvendorsTablevendor extends Table
 	 *
 	 * @return  array
 	 */
-	private function JAccessRulestoArray($jaccessrules)
+	private function RulestoArray($jaccessrules)
 	{
 		$rules = array();
 
@@ -124,8 +124,6 @@ class TjvendorsTablevendor extends Table
 	 */
 	public function check()
 	{
-		jimport('joomla.filesystem.file');
-
 		$db = Factory::getDbo();
 		$this->alias = trim($this->alias);
 
@@ -155,7 +153,7 @@ class TjvendorsTablevendor extends Table
 
 			while ($table->load(array('alias' => $this->alias)))
 			{
-				$this->alias = JString::increment($this->alias, 'dash');
+				$this->alias = StringHelper::increment($this->alias, 'dash');
 			}
 
 			Factory::getApplication()->enqueueMessage($msg, 'warning');

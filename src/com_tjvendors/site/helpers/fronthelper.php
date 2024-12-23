@@ -9,8 +9,9 @@
  */
 
 defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
@@ -56,8 +57,8 @@ class TjvendorFrontHelper
 	public static function getUniqueClients($user_id)
 	{
 		$vendor_id = self::getvendor();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
 		$query->select('DISTINCT' . $db->quoteName('client'));
 		$query->from($db->quoteName('#__tjvendors_passbook', 'vendors'));
 
@@ -308,7 +309,7 @@ class TjvendorFrontHelper
 	{
 		if (empty($user_id))
 		{
-			$user_id = jFactory::getuser()->id;
+			$user_id = Factory::getuser()->id;
 		}
 
 		$db = Factory::getDbo();
@@ -375,7 +376,10 @@ class TjvendorFrontHelper
 			Factory::getApplication()->enqueueMessage(Text::_('COM_TJVENDORS_DB_EXCEPTION_WARNING_MESSAGE'), 'error');
 		}
 
-		$params = json_decode($result['params']);
+		if (isset($result['params']) && !empty($result['params']))
+		{
+			$params = json_decode($result['params']);
+		}
 
 		if (empty($params->payment_gateway))
 		{
@@ -557,12 +561,11 @@ class TjvendorFrontHelper
 	 */
 	public function getItemId($link)
 	{
-		$mainframe = Factory::getApplication();
+		$app = Factory::getApplication();
 
-		if ($mainframe->issite())
+		if ($app->isClient('site'))
 		{
-			$JSite = new JSite;
-			$menu  = $JSite->getMenu();
+  	 		$menu     = $app->getMenu();
 			$menuItem = $menu->getItems('link', $link, true);
 
 			if ($menuItem)
@@ -653,7 +656,6 @@ class TjvendorFrontHelper
 		$query->where($db->quoteName('client') . ' = ' . $db->quote($client));
 		$query->where($db->quoteName('vendor_id') . ' = ' . (int) $vendorId);
 		$db->setQuery($query);
-
 		$return = $db->loadResult();
 
 		if ($return)

@@ -56,7 +56,7 @@ var tjVAdmin = {
 				CommonObj.showOtherCity('jform_city', city);
 			});
 
-			jQuery(window).load(function() {
+			jQuery(window).on('load', function(){
 				tjCommon.vendorLogoValidation();
 				tjCommon.initVendorFields();
 			});
@@ -229,14 +229,28 @@ var tjVSite = {
 				CommonObj.showOtherCity('jform_city', city)
 			});
 
-			jQuery(window).load(function() {
+			jQuery(document).ready(function() {
 				tjCommon.vendorLogoValidation();
 				tjCommon.initVendorFields();
+
+				document.formvalidator.setHandler('urlformat', function (value) {
+						var regex = new RegExp(
+							'^(https?:\\/\\/)?' + // protocol
+							'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+							'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+							'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+							'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+							'(\\#[-a-z\\d_]*)?$','i' // fragment locator
+						);
+
+						return regex.test(value);
+				});
 			});
 
 			Joomla.submitbutton = function(task) {
 				if (task == 'vendor.save') {
 					var validData = document.formvalidator.isValid(document.getElementById('adminForm'));
+
 					if (validData == true) {
 						Joomla.submitform(task, document.getElementById('adminForm'));
 					}
@@ -255,7 +269,7 @@ var tjVSite = {
 		/*Initialize event js*/
 		initVendorsJs: function() {
 			jQuery(document).ready(function() {
-				jQuery("#dates, #date").blur(function() {
+				jQuery("#dates, #date").change(function() {
 					jQuery('#adminForm').submit();
 				});
 			});
@@ -338,8 +352,8 @@ var tjCommon = {
 				url: Joomla.getOptions('system.paths').base + "/index.php?option=com_tjvendors&task=vendor.generateGatewayFields",
 				success: function (response) {
 					let $thisId = jQuery('#' + eleId);
-					$thisId.closest('.subform-repeatable-group').find('.payment-gateway-parent').empty();
-					
+					$thisId.closest('.subform-repeatable-group').find('.payment-gateway-parent').remove();
+
 					if (response) {
 						response.forEach(function(data) {
 							$thisId.closest('.subform-repeatable-group').append("<div class='payment-gateway-parent'>" + data + "</div>");

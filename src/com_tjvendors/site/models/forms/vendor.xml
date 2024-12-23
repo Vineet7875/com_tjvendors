@@ -158,6 +158,7 @@
 		<field
 			name="region"
 			type="list"
+			class="form-select"
 			label="COM_TJVENDORS_FORM_LBL_REGION"
 			description="COM_TJVENDORS_FORM_DESC_REGION"
 			filter="integer">
@@ -170,6 +171,7 @@
 			description="COM_TJVENDORS_FORM_DESC_CITY"
 			onchange="CommonObj.showOtherCity('jform_city')"
 			maxlength="50"
+			class="form-select"
 			filter="string">
 		</field>
 
@@ -207,6 +209,7 @@
 			type="url"
 			default=""
 			label="COM_TJVENDORS_FORM_LBL_WEBSITE"
+			class="form-control validate-urlformat"
 			description="COM_TJVENDORS_FORM_DESC_WEBSITE"
 			validate="url"
 			schemes="http,https"

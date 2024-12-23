@@ -9,11 +9,12 @@
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\Data\DataObject;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
-use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Object\CMSObject;
@@ -79,6 +80,9 @@ class Com_TjvendorsInstallerScript
 
 		// Install plugins
 		$this->_installPlugins($parent);
+
+		// Remove duplicate menu item 
+		$this->removeDupicatemenus();
 	}
 
 	/**
@@ -102,8 +106,6 @@ class Com_TjvendorsInstallerScript
 	 */
 	public function uninstall($parent)
 	{
-		jimport('joomla.installer.installer');
-
 		$db = Factory::getDBO();
 
 		$status          = new CMSObject;
@@ -156,7 +158,6 @@ class Com_TjvendorsInstallerScript
 	 */
 	public function _installPlugins($parent)
 	{
-		jimport('joomla.installer.installer');
 		$src = $parent->getParent()->getPath('source');
 
 		$db = Factory::getDbo();
@@ -292,8 +293,7 @@ class Com_TjvendorsInstallerScript
 
 		if ($buffer !== false)
 		{
-			jimport('joomla.installer.helper');
-			$queries = InstallerHelper::splitSql($buffer);
+			$queries = \JDatabaseDriver::splitSql($buffer);
 
 			if (count($queries) != 0)
 			{
@@ -305,7 +305,7 @@ class Com_TjvendorsInstallerScript
 					{
 						$db->setQuery($query);
 
-						if (!$db->query())
+						if (!$db->execute())
 						{
 							JError::raiseWarning(1, Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 
@@ -417,7 +417,6 @@ class Com_TjvendorsInstallerScript
 	public function _insertTjNotificationTemplates()
 	{
 		$client = 'com_tjvendors';
-		jimport('joomla.application.component.model');
 		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_tjnotifications/tables');
 
 		$db = Factory::getDbo();
@@ -557,9 +556,6 @@ class Com_TjvendorsInstallerScript
 	 */
 	private function _addLayout($parent)
 	{
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		$src = $parent->getParent()->getPath('source');
 		$VendorSubformLayouts = $src . "/layouts/com_tjvendors";
 
@@ -569,5 +565,44 @@ class Com_TjvendorsInstallerScript
 		}
 
 		Folder::copy($VendorSubformLayouts, JPATH_SITE . '/layouts/com_tjvendors');
+	}
+
+	/**
+	 * This function is used to remove duplicate menu items
+	 *
+	 * @return  ''.
+	 *
+	 * @since   2.3.0
+	 */
+	public function removeDupicatemenus()
+	{
+		// Remove duplicate menu item
+		// Since 4.0.3
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		if (JVERSION >= '4.0.0')
+		{
+			$table   = new \Joomla\Component\Menus\Administrator\Table\MenuTable($db);
+		} 
+		else 
+		{
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_menus/tables');
+			$table = Table::getInstance('menu', 'MenusTable', array('dbo', $db));
+		}
+
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('id');
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
+		$query->where($db->quoteName('path') . ' IN ("com-tjvendors-tjnotifications-menu", "com_tjvendors_tjnotifications_menu")');
+		$db->setQuery($query);
+		$data = $db->loadObjectList();
+
+		foreach ($data as $key => $menuItem) 
+		{
+			$table->delete($menuItem->id);
+		}
 	}
 }

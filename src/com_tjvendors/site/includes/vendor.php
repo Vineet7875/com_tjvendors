@@ -404,7 +404,7 @@ class TjvendorsVendor extends CMSObject
 	{
 		if (empty($this->vendor_logo))
 		{
-			return Uri::root() . "administrator/components/com_tjvendors/assets/images/default.png";
+			return Uri::root() . "media/com_tjvendor/images/default.png";
 		}
 
 		return Uri::root() . $this->vendor_logo;
@@ -653,7 +653,7 @@ class TjvendorsVendor extends CMSObject
 		$total += (!empty($data->address)) ? 10 : 0;
 		$total += (!empty($data->country->country)) ? 10: 0;
 		$total += (!empty($data->region->region)) ? 10: 0;
-		$total += (!empty($data->city->city)) ? 10: 0;
+		$total += ((!empty($data->city->city) || $data->other_city)) ? 10: 0;
 		$total += (!empty($data->zip)) ? 10: 0;
 		$total += (!empty($data->phone_number)) ? 5: 0;
 		$total += (!empty($data->website_address)) ? 5: 0;

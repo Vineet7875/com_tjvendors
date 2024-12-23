@@ -10,9 +10,12 @@
 
 // No direct access
 defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -86,39 +89,62 @@ class TjvendorsViewVendors extends HtmlView
 		$state = $this->get('State');
 		$canDo = TjvendorsHelper::getActions();
 
-		$toolbar = JToolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance('toolbar');
 		$toolbar->appendButton(
 		'Custom', '<a id="tjHouseKeepingFixDatabasebutton" class="btn btn-default hidden"><span class="icon-refresh"></span>'
-		. JText::_('COM_TJVENDORS_FIX_DATABASE') . '</a>');
+		. Text::_('COM_TJVENDORS_FIX_DATABASE') . '</a>');
 		JToolBarHelper::addNew('vendor.add');
+		
+		if (JVERSION >= '4.0.0')
+		{
+			$dropdown = $toolbar->dropdownButton('status-group')
+				->text('JTOOLBAR_CHANGE_STATUS')
+				->toggleSplit(false)
+				->icon('icon-ellipsis-h')
+				->buttonClass('btn btn-action')
+				->listCheck(true);
+
+			$childBar = $dropdown->getChildToolbar();
+		}
 
 		$tjvendorFrontHelper = new TjvendorFrontHelper;
-		$clientTitle = $tjvendorFrontHelper->getClientName($this->client);
-
-		$title = !empty($this->client) ? $clientTitle . ' : ' : '';
+		$clientTitle         = $tjvendorFrontHelper->getClientName($this->client);
+		$title               = !empty($this->client) ? $clientTitle . ' : ' : '';
 
 		ToolbarHelper::title($title . Text::_('COM_TJVENDORS_TITLE_VENDORS'), 'list.png');
 
-		if ($canDo->get('core.edit') && isset($this->items[0]))
-		{
-			JToolBarHelper::editList('vendor.edit', 'JTOOLBAR_EDIT');
-		}
-
 		if ($canDo->get('core.edit.state'))
 		{
-			if (isset($this->items[0]->state))
+			if (JVERSION < '4.0.0')
 			{
-				JToolBarHelper::divider();
-				JToolBarHelper::custom('vendors.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
-				JToolBarHelper::custom('vendors.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-			}
+				if (isset($this->items[0]->state))
+				{
+					JToolBarHelper::divider();
+					JToolBarHelper::custom('vendors.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
+					JToolBarHelper::custom('vendors.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+				}
 
-			if (isset($this->items[0]))
+				if (isset($this->items[0]))
+				{
+					JToolBarHelper::deleteList('', 'vendors.delete', 'JTOOLBAR_DELETE');
+				}
+			}
+			else
 			{
-				// If this component does not use state then show a direct delete button as we can not trash
-				JToolBarHelper::deleteList('', 'vendors.delete', 'JTOOLBAR_DELETE');
+				if (isset($this->items[0]->state))
+				{
+					$childBar->publish('vendors.publish')->listCheck(true);
+					$childBar->unpublish('vendors.unpublish')->listCheck(true);
+				}
+
+				if (isset($this->items[0]))
+				{
+					$childBar->delete('vendors.delete')->listCheck(true);
+				}
 			}
 		}
+
+		HTMLHelper::_('bootstrap.modal', 'collapseModal');
 
 		if ($canDo->get('core.admin'))
 		{

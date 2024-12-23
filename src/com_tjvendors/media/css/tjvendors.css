@@ -86,3 +86,19 @@ display: flex;
 .tjBs3 .vendorForm .btn-toolbar .input-group {
   float: unset;
 }
+
+.tjBs3.vendor-report .icon-calendar {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.tjBs3.vendor-report .icon-calendar:before {
+    content: "\f073";
+}
+
+.tjBs3.vendor-report #dates, .tjBs3.vendor-report #date {
+	display: inline-block;
+}

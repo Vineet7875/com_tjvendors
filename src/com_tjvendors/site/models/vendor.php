@@ -10,13 +10,14 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Table\Table;
 
 JLoader::import('fronthelper', JPATH_SITE . '/components/com_tjvendors/helpers');
 JLoader::import('tjvendors', JPATH_ADMINISTRATOR . '/components/com_tjvendors/helpers');
@@ -331,9 +332,21 @@ class TjvendorsModelVendor extends AdminModel
 
 			foreach ($fieldSet as $field)
 			{
-				if ($app->isAdmin())
+				if ($app->isClient('administrator'))
 				{
-					$html[] = $field->renderField();
+					if (JVERSION < '4.0.0')
+					{
+						$html[] = $field->renderField();
+					}
+					else
+					{
+						$paymentGatewayHtml = $field->renderField();
+						$paymentGatewayHtml = str_replace('control-group', 'form-group row', $paymentGatewayHtml);
+						$paymentGatewayHtml = str_replace('control-label', 'form-label col-md-3', $paymentGatewayHtml);
+						$paymentGatewayHtml = str_replace('controls', 'col-md-9', $paymentGatewayHtml);
+						$html[] = $paymentGatewayHtml;
+					}
+					
 				}
 				else
 				{
@@ -370,6 +383,8 @@ class TjvendorsModelVendor extends AdminModel
 		$layout   = $input->get('layout', '', 'STRING');
 		$xrefData = array();
 		$tjvendorFrontHelper = new TjvendorFrontHelper;
+		$tjVendorsParams = ComponentHelper::getParams('com_tjvendors');
+		$vendorApprovalEnabled = $tjVendorsParams->get('vendor_approval', 0, 'INT');
 
 		JLoader::import('components.com_tjvendors.events.vendor', JPATH_SITE);
 		$tjvendorsTriggerVendor = new TjvendorsTriggerVendor;
@@ -409,14 +424,6 @@ class TjvendorsModelVendor extends AdminModel
 
 		if (isset($data['payment_gateway']))
 		{
-			foreach ($data['payment_gateway'] as $key => $value)
-			{
-				if (count($value) <= 1)
-				{
-					unset($data['payment_gateway'][$key]);
-				}
-			}
-
 			$paymentGatway['payment_gateway'] = $data['payment_gateway'];
 			$xrefData['params'] = json_encode($paymentGatway);
 			$data['params'] = '';
@@ -457,6 +464,12 @@ class TjvendorsModelVendor extends AdminModel
 				$client_entry->client = $data['vendor_client'];
 				$client_entry->vendor_id = $data['vendor_id'];
 				$client_entry->params = $xrefData['params'];
+
+				if ($vendorApprovalEnabled == 0 && $data['approved'] == '')
+				{
+					$data['approved'] = 1;
+				}
+
 				$client_entry->approved = $data['approved'];
 
 				// Insert the object into the user profile table.
@@ -465,8 +478,7 @@ class TjvendorsModelVendor extends AdminModel
 
 				// Plugin trigger
 				PluginHelper::importPlugin('tjvendors');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('tjVendorOnAfterVendorSave', array($data));
+				Factory::getApplication()->triggerEvent('onAfterTjVendorVendorSave', array($data));
 
 				return true;
 			}
@@ -503,8 +515,7 @@ class TjvendorsModelVendor extends AdminModel
 
 				// Plugin trigger
 				PluginHelper::importPlugin('tjvendors');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('tjVendorOnAfterVendorSave', array($data));
+				Factory::getApplication()->triggerEvent('onAfterTjVendorVendorSave', array($data));
 
 				return true;
 			}
@@ -525,6 +536,12 @@ class TjvendorsModelVendor extends AdminModel
 					$client_entry->client = $data['vendor_client'];
 					$client_entry->vendor_id = $data['vendor_id'];
 					$client_entry->params = $xrefData['params'];
+
+					if ($vendorApprovalEnabled == 0 && $data['approved'] == '')
+					{
+						$data['approved'] = 1;
+					}
+
 					$client_entry->approved = !empty( $data['approved']) ? $data['approved'] : '';
 
 					// Insert the object into the vendor_client_xref table.
@@ -536,8 +553,7 @@ class TjvendorsModelVendor extends AdminModel
 
 				// Plugin trigger
 				PluginHelper::importPlugin('tjvendors');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('tjVendorOnAfterVendorSave', array());
+				Factory::getApplication()->triggerEvent('onAfterTjVendorVendorSave', array());
 
 				return $data['vendor_id'];
 			}
@@ -690,5 +706,28 @@ class TjvendorsModelVendor extends AdminModel
 		$item = parent::getItem($vendorXref->vendor_id);
 
 		return $item;
+	}
+
+	/**
+	 * Method to get a vendor details by vendor Id
+	 *
+	 * @param   integer  $id  The vendor id
+	 *
+	 * @return  mixed    Object on success, false on failure.
+	 *
+	 * @since    1.3.3
+	 */
+	public function getDetailsByVendorId($id)
+	{
+		if (empty($id))
+		{
+			return false;
+		}
+
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_tjvendors/tables');
+		$vendorDetails = Table::getInstance('Vendor', 'TjvendorsTable');
+		$vendorDetails->load(array('vendor_id' => $id));
+
+		return $vendorDetails;
 	}
 }

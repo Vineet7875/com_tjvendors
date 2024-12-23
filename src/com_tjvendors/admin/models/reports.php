@@ -9,8 +9,9 @@
  */
 
 defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
@@ -167,15 +168,15 @@ class TjvendorsModelReports extends ListModel
 
 		if (empty($toDate) && !empty($fromDate))
 		{
-			$query->where($db ->quoteName('transaction_time') . " >= " . $db->quote($fromDate));
+			$query->where('Date(' . $db ->quoteName('transaction_time') .')' . " >= " . $db->quote($fromDate));
 		}
 		elseif (empty($fromDate) && !empty($toDate))
 		{
-			$query->where($db ->quoteName('transaction_time') . " <= " . $db->quote($toDate));
+			$query->where('Date('.$db->quoteName('transaction_time').')' . " <= " . $db->quote($toDate));
 		}
 		elseif (!empty($fromDate) && !empty($toDate))
 		{
-			$query->where($db ->quoteName('transaction_time') . 'BETWEEN' . "'$fromDate'" . 'AND' . "'$toDate'");
+			$query->where('Date('.$db ->quoteName('transaction_time') .')' . 'BETWEEN' . "'$fromDate'" . 'AND' . "'$toDate'");
 		}
 
 		// Filter by search in title
@@ -191,7 +192,8 @@ class TjvendorsModelReports extends ListModel
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
 				$query->where('(' . $db->quoteName('vendors.vendor_id') . ' LIKE ' . $search . 'OR' .
-				$db->quoteName('pass.currency') . 'OR' . $db->quoteName('vendors.vendor_title') . ' LIKE ' . $search . ')');
+				$db->quoteName('pass.currency') . 'OR' . $db->quoteName('vendors.vendor_title') . ' LIKE ' . $search .
+				'OR' . $db->quoteName('transaction_id') . ' LIKE ' . $search . ')');
 			}
 		}
 
